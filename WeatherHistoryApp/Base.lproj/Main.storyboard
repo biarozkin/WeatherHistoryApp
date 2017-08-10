@@ -21,7 +21,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="CoordinatesLabel" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eKu-2t-On4">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Coordinates" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eKu-2t-On4">
                                 <rect key="frame" x="0.0" y="70" width="320" height="60"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="60" id="IPO-sm-Ndz"/>
@@ -30,10 +30,10 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="addressFromCoordinatesLabel" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SCs-t4-8WU">
-                                <rect key="frame" x="0.0" y="130" width="320" height="70"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="place" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SCs-t4-8WU">
+                                <rect key="frame" x="0.0" y="130" width="320" height="60"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="70" id="Bly-Sg-Liq"/>
+                                    <constraint firstAttribute="height" constant="60" id="Bly-Sg-Liq"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
@@ -46,8 +46,15 @@
                                 <rect key="frame" x="150" y="155" width="20" height="20"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </activityIndicatorView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="weatherForecast" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DUk-Ja-LXc">
-                                <rect key="frame" x="0.0" y="208" width="320" height="70"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="temperature" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Yhi-hf-dnO">
+                                <rect key="frame" x="0.0" y="190" width="320" height="60"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="forecastDetails" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZUD-Av-Ni4">
+                                <rect key="frame" x="0.0" y="249" width="320" height="60"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
@@ -68,10 +75,12 @@
                     </view>
                     <tabBarItem key="tabBarItem" title="Main" image="first" id="acW-dT-cKf"/>
                     <connections>
-                        <outlet property="addressActivityIndicator" destination="Ae4-kh-ODb" id="rst-Ej-32D"/>
-                        <outlet property="addressFromCoordinatesLabel" destination="SCs-t4-8WU" id="Lzd-lN-Jj5"/>
                         <outlet property="coordinatesActivityIndicator" destination="u7Y-xr-jMz" id="XbS-pu-Vxx"/>
                         <outlet property="coordinatesLabel" destination="eKu-2t-On4" id="EfA-gn-6uH"/>
+                        <outlet property="forecastDetailsLabel" destination="ZUD-Av-Ni4" id="1Qc-9s-MVI"/>
+                        <outlet property="placeActivityIndicator" destination="Ae4-kh-ODb" id="VEE-Zq-BoJ"/>
+                        <outlet property="placeLabel" destination="SCs-t4-8WU" id="JtK-5l-bvQ"/>
+                        <outlet property="temperatureLabel" destination="Yhi-hf-dnO" id="2Hd-Pc-e06"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="W5J-7L-Pyd" sceneMemberID="firstResponder"/>

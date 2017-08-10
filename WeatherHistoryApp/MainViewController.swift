@@ -13,9 +13,13 @@ class MainViewController: UIViewController {
 
     @IBOutlet weak var coordinatesLabel: UILabel!
     @IBOutlet weak var coordinatesActivityIndicator: UIActivityIndicatorView!
-    @IBOutlet weak var addressFromCoordinatesLabel: UILabel!
-    @IBOutlet weak var addressActivityIndicator: UIActivityIndicatorView!
+    @IBOutlet weak var placeLabel: UILabel!
+    @IBOutlet weak var placeActivityIndicator: UIActivityIndicatorView!
 
+    @IBOutlet weak var temperatureLabel: UILabel!
+    @IBOutlet weak var forecastDetailsLabel: UILabel!
+    
+    
     let locationManager = CLLocationManager()
 
     //MARK: - LifeCycle VC
@@ -37,35 +41,36 @@ class MainViewController: UIViewController {
         coordinatesActivityIndicator.hidesWhenStopped = true
         coordinatesActivityIndicator.startAnimating()
         
-        addressFromCoordinatesLabel.isHidden = true
-        addressActivityIndicator.isHidden = false
-        addressActivityIndicator.hidesWhenStopped = true
-        addressActivityIndicator.startAnimating()
+        placeLabel.isHidden = true
+        placeActivityIndicator.isHidden = false
+        placeActivityIndicator.hidesWhenStopped = true
+        placeActivityIndicator.startAnimating()
         
     }
     
     func updateCoordinatesLabelWith(_ location: CLLocation) {
         coordinatesLabel.text = String(format: "Lat: \(location.coordinate.latitude)\nlong: \(location.coordinate.longitude)")
         coordinatesLabel.isHidden = false
-        reverseGeocodingUsing(location)
+        updatePlaceLabelUsing(location)
     }
     
-    func reverseGeocodingUsing(_ location: CLLocation) {
+    func updatePlaceLabelUsing(_ location: CLLocation) {
         CLGeocoder().reverseGeocodeLocation(location) { (placemarks, error) in
             if (error == nil) {
                 if (placemarks?.count)! > 0 {
                     let placemark = placemarks!.first! as CLPlacemark
-                    print("!!!!: \(placemark.locality)")
-                    self.addressFromCoordinatesLabel.text = placemark.locality
-                    self.addressFromCoordinatesLabel.isHidden = false
+                    if let locality = placemark.locality {
+                        self.placeLabel.text = locality
+                    }
+                    self.placeLabel.isHidden = false
                 }
             } else {
                 print("Error while reverse geocoding: \(error?.localizedDescription)")
             }
-            self.addressActivityIndicator.stopAnimating()
+            self.placeActivityIndicator.stopAnimating()
         }
     }
-
+    
     /*
     // MARK: - Navigation
     // In a storyboard-based application, you will often want to do a little preparation before navigation
@@ -79,15 +84,26 @@ class MainViewController: UIViewController {
 
 extension MainViewController: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        if let location = locations.last {
-            print("LocationDate: \(location.timestamp)")
-            print("LocationCoordinates: \(location.coordinate)")
-            coordinatesActivityIndicator.stopAnimating()
-            updateCoordinatesLabelWith(location)
+        //if-statement-workaround made for not to use cached location position, if the latest one was retrieved more than 60 secs ago
+        if locations.last!.timestamp.timeIntervalSinceNow > -60.0 {
+            print("didUpdateLocations_case1")
+            if let location = locations.last {
+                print("LocationDate: \(location.timestamp)")
+                print("LocationCoordinates: \(location.coordinate)")
+                
+                WeatherManager().getWeatherUsing(location.coordinate)
+                
+                coordinatesActivityIndicator.stopAnimating()
+                updateCoordinatesLabelWith(location)
+            }
+        } else {
+            print("didUpdateLocations_case2")
+            locationManager.requestLocation()
         }
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         print("Error while retrieving location: \(error.localizedDescription))")
+        locationManager.requestLocation()
     }
 }
