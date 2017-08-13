@@ -13,28 +13,38 @@ class MainViewController: UIViewController {
 
     @IBOutlet weak var coordinatesLabel: UILabel!
     @IBOutlet weak var coordinatesActivityIndicator: UIActivityIndicatorView!
+    
     @IBOutlet weak var placeLabel: UILabel!
     @IBOutlet weak var placeActivityIndicator: UIActivityIndicatorView!
 
     @IBOutlet weak var temperatureLabel: UILabel!
+    @IBOutlet weak var temperatureActivityIndicator: UIActivityIndicatorView!
+    
     @IBOutlet weak var forecastDetailsLabel: UILabel!
+    @IBOutlet weak var forecastActivityIndicator: UIActivityIndicatorView!
     
-    
-    let locationManager = CLLocationManager()
+    var requestsArray: Array<Weather> = []
 
     //MARK: - LifeCycle VC
     override func viewDidLoad() {
         super.viewDidLoad()
-        prepareLocationManager()
+        NotificationCenter.default.addObserver(self, selector: #selector(updateUIWithData(_:)), name: kLocationRetrievedNotification, object: nil)
         prepareUI()
+        prepareLocationManager()
     }
     
+    deinit {
+        //made for iOS 8 and earlier
+        NotificationCenter.default.removeObserver(self, name: kLocationRetrievedNotification, object: nil)
+    }
+    
+    
+    //MARK: - Preparation
     func prepareLocationManager() {
-        locationManager.delegate = self
-        locationManager.requestWhenInUseAuthorization()
-        locationManager.requestLocation()
+        _ = LocationManager.shared
     }
     
+    //MARK: - UI
     func prepareUI() {
         coordinatesLabel.isHidden = true
         coordinatesActivityIndicator.isHidden = false
@@ -46,64 +56,44 @@ class MainViewController: UIViewController {
         placeActivityIndicator.hidesWhenStopped = true
         placeActivityIndicator.startAnimating()
         
+        temperatureLabel.isHidden = true
+        temperatureActivityIndicator.isHidden = false
+        temperatureActivityIndicator.hidesWhenStopped = true
+        temperatureActivityIndicator.startAnimating()
+        
+        forecastDetailsLabel.isHidden = true
+        forecastActivityIndicator.isHidden = false
+        forecastActivityIndicator.hidesWhenStopped = true
+        forecastActivityIndicator.startAnimating()
     }
     
-    func updateCoordinatesLabelWith(_ location: CLLocation) {
-        coordinatesLabel.text = String(format: "Lat: \(location.coordinate.latitude)\nlong: \(location.coordinate.longitude)")
-        coordinatesLabel.isHidden = false
-        updatePlaceLabelUsing(location)
-    }
-    
-    func updatePlaceLabelUsing(_ location: CLLocation) {
-        CLGeocoder().reverseGeocodeLocation(location) { (placemarks, error) in
-            if (error == nil) {
-                if (placemarks?.count)! > 0 {
-                    let placemark = placemarks!.first! as CLPlacemark
-                    if let locality = placemark.locality {
-                        self.placeLabel.text = locality
-                    }
-                    self.placeLabel.isHidden = false
+    func updateUIWithData(_ notification: NSNotification) {
+        if let location = notification.userInfo?["location"] as? CLLocation {
+            WeatherManager().getWeatherUsing(location.coordinate, completion: { (weatherData) in
+                DispatchQueue.main.async {
+                    self.updateLabels(weatherData)
                 }
-            } else {
-                print("Error while reverse geocoding: \(error?.localizedDescription)")
-            }
-            self.placeActivityIndicator.stopAnimating()
+            })
         }
     }
     
-    /*
-    // MARK: - Navigation
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    func updateLabels(_ weatherData: Array<Weather>) {
+        let currentWeather = weatherData.last   //should I check for optional?
+        coordinatesLabel.text = String(format: "lat: \(currentWeather!.latitude!)\nlong: \(currentWeather!.longtitude!)")
+        coordinatesLabel.isHidden = false
+        coordinatesActivityIndicator.stopAnimating()
+        
+        placeLabel.text = currentWeather?.place!
+        placeLabel.isHidden = false
+        placeActivityIndicator.stopAnimating()
+        
+        temperatureLabel.text = String(format: "%.0f°C", currentWeather!.temperature!)
+        temperatureLabel.isHidden = false
+        temperatureActivityIndicator.stopAnimating()
+        
+        forecastDetailsLabel.text = currentWeather?.details
+        forecastDetailsLabel.isHidden = false
+        forecastActivityIndicator.stopAnimating()
     }
-    */
-
-}
-
-extension MainViewController: CLLocationManagerDelegate {
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        //if-statement-workaround made for not to use cached location position, if the latest one was retrieved more than 60 secs ago
-        if locations.last!.timestamp.timeIntervalSinceNow > -60.0 {
-            print("didUpdateLocations_case1")
-            if let location = locations.last {
-                print("LocationDate: \(location.timestamp)")
-                print("LocationCoordinates: \(location.coordinate)")
-                
-                WeatherManager().getWeatherUsing(location.coordinate)
-                
-                coordinatesActivityIndicator.stopAnimating()
-                updateCoordinatesLabelWith(location)
-            }
-        } else {
-            print("didUpdateLocations_case2")
-            locationManager.requestLocation()
-        }
-    }
-    
-    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        print("Error while retrieving location: \(error.localizedDescription))")
-        locationManager.requestLocation()
-    }
+        
 }
