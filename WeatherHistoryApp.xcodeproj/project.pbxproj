@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		9509C0561F3EEF5100147CF1 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9509C0551F3EEF5000147CF1 /* LocationManager.swift */; };
+		9509C07A1F40A92100147CF1 /* WeatherHistoryApp.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 9509C0781F40A92100147CF1 /* WeatherHistoryApp.xcdatamodeld */; };
+		9509C07E1F40EE1900147CF1 /* DataStorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9509C07D1F40EE1900147CF1 /* DataStorageManager.swift */; };
 		953FC2361F3C5E6D00BD81FD /* WeatherManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 953FC2351F3C5E6D00BD81FD /* WeatherManager.swift */; };
 		953FC23B1F3CCC3500BD81FD /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 953FC23A1F3CCC3500BD81FD /* Utils.swift */; };
 		953FC2421F3DA38600BD81FD /* HistoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 953FC2411F3DA38600BD81FD /* HistoryViewController.swift */; };
@@ -18,11 +20,12 @@
 		955DA4671F39B5A100E9461C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 955DA4661F39B5A100E9461C /* Assets.xcassets */; };
 		955DA46A1F39B5A100E9461C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 955DA4681F39B5A100E9461C /* LaunchScreen.storyboard */; };
 		955DA4741F39BD4300E9461C /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 955DA4731F39BD4300E9461C /* MainViewController.swift */; };
-		95EF514A1F3E4620008FDDF4 /* GlobalData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95EF51491F3E4620008FDDF4 /* GlobalData.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		9509C0551F3EEF5000147CF1 /* LocationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
+		9509C0791F40A92100147CF1 /* WeatherHistoryApp.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = WeatherHistoryApp.xcdatamodel; sourceTree = "<group>"; };
+		9509C07D1F40EE1900147CF1 /* DataStorageManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataStorageManager.swift; sourceTree = "<group>"; };
 		953FC2351F3C5E6D00BD81FD /* WeatherManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeatherManager.swift; sourceTree = "<group>"; };
 		953FC23A1F3CCC3500BD81FD /* Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		953FC2411F3DA38600BD81FD /* HistoryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HistoryViewController.swift; sourceTree = "<group>"; };
@@ -35,7 +38,6 @@
 		955DA4691F39B5A100E9461C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		955DA46B1F39B5A100E9461C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		955DA4731F39BD4300E9461C /* MainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
-		95EF51491F3E4620008FDDF4 /* GlobalData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GlobalData.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -79,6 +81,7 @@
 			isa = PBXGroup;
 			children = (
 				953FC2451F3DE77B00BD81FD /* Weather.swift */,
+				9509C0781F40A92100147CF1 /* WeatherHistoryApp.xcdatamodeld */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -107,7 +110,7 @@
 				953FC2371F3C741C00BD81FD /* Controller */,
 				953FC2391F3C748400BD81FD /* Networking */,
 				9509C0551F3EEF5000147CF1 /* LocationManager.swift */,
-				95EF51491F3E4620008FDDF4 /* GlobalData.swift */,
+				9509C07D1F40EE1900147CF1 /* DataStorageManager.swift */,
 				953FC23A1F3CCC3500BD81FD /* Utils.swift */,
 				955DA4751F39E9AC00E9461C /* Supporting files */,
 			);
@@ -199,12 +202,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				953FC23B1F3CCC3500BD81FD /* Utils.swift in Sources */,
-				95EF514A1F3E4620008FDDF4 /* GlobalData.swift in Sources */,
 				9509C0561F3EEF5100147CF1 /* LocationManager.swift in Sources */,
+				9509C07E1F40EE1900147CF1 /* DataStorageManager.swift in Sources */,
 				955DA45E1F39B5A100E9461C /* AppDelegate.swift in Sources */,
 				953FC2441F3DE43E00BD81FD /* HistoryTableViewCell.swift in Sources */,
 				953FC2461F3DE77B00BD81FD /* Weather.swift in Sources */,
 				953FC2361F3C5E6D00BD81FD /* WeatherManager.swift in Sources */,
+				9509C07A1F40A92100147CF1 /* WeatherHistoryApp.xcdatamodeld in Sources */,
 				955DA4741F39BD4300E9461C /* MainViewController.swift in Sources */,
 				953FC2421F3DA38600BD81FD /* HistoryViewController.swift in Sources */,
 			);
@@ -375,6 +379,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		9509C0781F40A92100147CF1 /* WeatherHistoryApp.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				9509C0791F40A92100147CF1 /* WeatherHistoryApp.xcdatamodel */,
+			);
+			currentVersion = 9509C0791F40A92100147CF1 /* WeatherHistoryApp.xcdatamodel */;
+			path = WeatherHistoryApp.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 955DA4521F39B5A100E9461C /* Project object */;
 }

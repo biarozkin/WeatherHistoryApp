@@ -7,18 +7,31 @@
 //
 
 import UIKit
+import CoreData
 
 class HistoryViewController: UIViewController, UITableViewDataSource {
 
     @IBOutlet weak var tableView: UITableView!
+    
+    var weatherData: [NSManagedObject] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
     }
     
-    var weatherData: Array<Weather> = []
     override func viewWillAppear(_ animated: Bool) {
-        weatherData = GlobalData.shared.requestsArray
+        super.viewWillAppear(animated)
+        
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
+        let managedContext = appDelegate.persistentContainer.viewContext
+        let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "WeatherEntity")
+        
+        do {
+            weatherData = try managedContext.fetch(fetchRequest)
+        } catch let error as NSError {
+            print("Could not fetch. \(error), \(error.userInfo)")
+        }
+        
         tableView.reloadData()
     }
     
@@ -26,14 +39,16 @@ class HistoryViewController: UIViewController, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         print("weatherDataCount: \(weatherData.count)")
         return weatherData.count
-        //return GlobalData.sharedInstance.requestsArray.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "historyCellIdentifier", for: indexPath) as! HistoryTableViewCell
-        cell.dateAndTimeLabel.text = weatherData[0].dateAndTime
-        cell.coordinatesLabel.text = "\(weatherData[0].latitude!), \(weatherData[0].longtitude!)"
-        cell.placeLabel.text = weatherData[0].place
+        
+        let weather = weatherData[indexPath.row]
+        cell.dateAndTimeLabel.text = weather.value(forKeyPath: "dateAndTime") as? String
+        cell.placeLabel.text = weather.value(forKeyPath: "place") as? String
+        cell.coordinatesLabel.text =
+            String("\(weather.value(forKeyPath: "latitude") as! Double),\(weather.value(forKeyPath: "longtitude") as! Double)")
         
         return cell
     }

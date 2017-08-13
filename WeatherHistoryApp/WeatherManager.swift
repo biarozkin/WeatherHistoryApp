@@ -69,20 +69,12 @@ class WeatherManager {
             }
             
             currentWeather.dateAndTime = Utils().getCurrentTime()
+        
+            DataStorageManager().save(lWeather: currentWeather)
             
-            //насколько такое справедливо и правильно?
             weatherData.removeAll()
-            print("localWeatherData_1: \(weatherData)")
-            print("global weatherData_1: \(GlobalData.shared.requestsArray)")
-            weatherData = GlobalData.shared.requestsArray
-            print("localWeatherData_2: \(weatherData)")
-            print("global weatherData_2: \(GlobalData.shared.requestsArray)")
             weatherData.append(currentWeather)
-            print("localWeatherData_3: \(weatherData)")
-            print("global weatherData_3: \(GlobalData.shared.requestsArray)")
-            GlobalData.shared.requestsArray = weatherData
-            print("localWeatherData_4: \(weatherData)")
-            print("global weatherData_4: \(GlobalData.shared.requestsArray)")
+            
         } catch {
             print("Error while JSON parsing")
         }
