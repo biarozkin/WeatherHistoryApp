@@ -14,32 +14,27 @@ let apiKey = "1d26cc3d8a8191b006901b69ac3cf753"
 class WeatherManager {
     
     typealias JSONDictionary = [String: Any]
-    var weatherData: Array<Weather> = []
     
-    func getWeatherUsing(_ coordinates: CLLocationCoordinate2D, completion: @escaping (Array<Weather>) -> () ) {
+    func getWeatherUsing(_ coordinates: CLLocationCoordinate2D, completion: @escaping (Weather) -> () ) {
         let url = URL(string: "http://api.openweathermap.org/data/2.5/weather?lat=\(coordinates.latitude)&lon=\(coordinates.longitude)&APPID=\(apiKey)")
         print("fullURL:\(url)")
         
         let task = URLSession.shared.dataTask(with: url!) { (data, response, error) in
-            if !(error != nil) {
+            if error == nil {
                 if let data = data {
-                    self.parseJSONWeather(data)
-                    //DispatchQueue.main.async {
-                        completion(self.weatherData)
-                    //}
-                    
+                    let currentWeather = self.parseJSONWeather(data)
+                        completion(currentWeather!)
                 }
             } else {
-                print("Error while getting weatherData:\(error?.localizedDescription)")
+                print("Error while getting weatherData: \(error?.localizedDescription)")
             }
         }
         task.resume()
     }
     
-    private func parseJSONWeather(_ data: Data) {
-        let currentWeather = Weather(dateAndTime: nil, long: nil, lat: nil, place: nil, temperature: nil, details: nil)
-
+    private func parseJSONWeather(_ data: Data) -> Weather? {
         do {
+            let currentWeather = Weather()
             let json = try JSONSerialization.jsonObject(with: data) as! NSDictionary
             
             if let coord = json["coord"] as? JSONDictionary {
@@ -70,14 +65,12 @@ class WeatherManager {
             
             currentWeather.dateAndTime = Utils().getCurrentTime()
         
-            DataStorageManager().save(lWeather: currentWeather)
+            DataStorageManager().saveToDisk(lWeather: currentWeather)
+            return currentWeather
             
-            weatherData.removeAll()
-            weatherData.append(currentWeather)
-            
-        } catch {
-            print("Error while JSON parsing")
+        } catch let error as NSError {
+            print("Error while JSON parsing: \(error.localizedDescription), futher actions may cause a crash, please check down from here")
+            return nil
         }
     }
-
 }

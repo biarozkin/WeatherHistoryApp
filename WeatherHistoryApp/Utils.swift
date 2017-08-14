@@ -7,33 +7,29 @@
 //
 
 import Foundation
+import UIKit
+
+struct customColor {
+    let headerColor = UIColor(red: 160 / 255, green: 236 / 255, blue: 254 / 255, alpha: 1)
+    let mainColor = UIColor(red: 180 / 255, green: 236 / 255, blue: 254 / 255, alpha: 1)
+}
 
 class Utils {
-    
     func kelvinToCelsius(_ kelvin: Double) -> Double {
         return kelvin - 273.15
     }
     
     func getCurrentTime() -> String {
-//        //let timestamp = DateFormatter.localizedString(from: Date(), dateStyle: .full, timeStyle: .full)
-//        //print("\(timestamp)")
-//        let date = Date()
-//        //print("\(date)")
-//        return date
         let formatter = DateFormatter()
-        // initially set the format based on your datepicker date
         formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        let currentTimeWithFormat = formatter.string(from: Date())
         
-        let myString = formatter.string(from: Date())
-//        // convert your string to date
-//        let yourDate = formatter.date(from: myString)
-//        //then again set the date format whhich type of output you need
-//        formatter.dateFormat = "dd-MMM-yyyy"
-//        // again convert your date to string
-//        let myStringafd = formatter.string(from: yourDate!)
-//        
-//        print(myStringafd)
-        return myString
+        return currentTimeWithFormat
     }
-    
+}
+
+extension UIApplication {
+    var statusBarView: UIView? {
+        return value(forKey: "statusBar") as? UIView
+    }
 }

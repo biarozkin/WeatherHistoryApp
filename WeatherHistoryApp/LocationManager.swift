@@ -26,7 +26,7 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
     }
 
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        //if-statement-workaround made for not to use cached location position, if the latest one was retrieved more than 60 secs ago
+        //if-statement-workaround made for not to use cached location position, if the latest one was retrieved less than 60 secs ago
         //if locations.last!.timestamp.timeIntervalSinceNow > -60.0 {
         if isLocationRetrieved == false {
             if let location = locations.last {
